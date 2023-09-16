@@ -1,5 +1,21 @@
+let python_script_relative_path = 'python/pattern_matching.py'
+let python_script_absolute_path = expand('<sfile>:p:h:h') . '/' . python_script_relative_path
+let load_python_file = 'py3file ' . python_script_absolute_path
+execute load_python_file
+
 function! navigator#Navigator()
-    call OpenFloatingWindow("echo 'Hello'")
+    let buffer_content = ""
+
+    " iterate over lines and store
+    for line_number in range(1, line('$'))
+        let buffer_content .= getline(line_number) . "\n"
+    endfor
+
+    " remove trailing line ends
+    let buffer_content = substitute(buffer_content, '\n$', ';;', '')
+
+    let text = py3eval("get_functions(\"\"\"" . buffer_content . "\"\"\")")
+    call OpenFloatingWindow(text)
 endfunction
 
 function! OpenFloatingWindow(command)
@@ -25,8 +41,10 @@ function! OpenFloatingWindow(command)
     let window = nvim_open_win(buffer, v:true, options)
 
     " Run the specified command in the buffer
-    call nvim_buf_set_lines(buffer, 0, -1, v:true, split(execute(a:command), "\n"))
+"    call nvim_buf_set_lines(buffer, 0, -1, v:true, split(execute(a:command), "\n"))
+    call nvim_buf_set_lines(buffer, 0, -1, v:true, split(a:command, "\n"))
     nnoremap <buffer> q :call CloseFloatingWindow()<CR>
+    nnoremap <buffer> <Esc> :call CloseFloatingWindow()<CR>
 
     " Set the buffer to be unmodifiable
     call nvim_buf_set_option(buffer, 'modifiable', v:false)
