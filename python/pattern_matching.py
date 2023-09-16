@@ -26,7 +26,8 @@ def get_functions(buff_txt):
 
             # Commit last documentation and restart
             if key == "name":
-                documentations.append(fn_documentation)
+                if len(functions) > 0:
+                    documentations.append(fn_documentation)
                 functions.append(target)
                 fln.append(line_counter)
 
