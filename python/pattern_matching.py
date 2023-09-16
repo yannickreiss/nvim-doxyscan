@@ -52,7 +52,15 @@ def get_functions(buff_txt):
     for i in range(len(fln)):
         status += f"> {fln[i]}:{' ' * (7-len(str( fln[i] )))}{functions[i]}\n"
         status += f"  {' ' * 8} Return: {documentations[i]['return']}\n"
-        status += f"  {' ' * 8} Parameters: {documentations[i]['param']}\n"
+        status += f"  {' ' * 8} Parameters: "
+
+        for parameter in documentations[i]['param']:
+            if len(documentations[i]['param']) > 0:
+                status += "•"
+            status += f" {parameter}"
+
+        status += "\n"
+
         status += f"  {' ' * 8} {documentations[i]['brief']}\n\n"
 
     return status
