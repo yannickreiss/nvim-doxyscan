@@ -54,10 +54,14 @@ def get_functions(buff_txt):
         status += f"  {' ' * 8} Return: {documentations[i]['return']}\n"
         status += f"  {' ' * 8} Parameters: "
 
+        pid = 1
         for parameter in documentations[i]['param']:
-            if len(documentations[i]['param']) > 0:
+            if len(documentations[i]['param']) > 0 and pid > 1:
                 status += "•"
-            status += f" {parameter}"
+
+            ptmp = parameter.replace('\t', ' ')
+            status += f" {ptmp}"
+            pid = 2
 
         status += "\n"
 
