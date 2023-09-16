@@ -1,5 +1,6 @@
 import re
 
+# TODO: Check why first entry seems to be always empty!
 def get_functions(buff_txt):
 
     lines = buff_txt.split("\n")
@@ -51,5 +52,8 @@ def get_functions(buff_txt):
 
     for i in range(len( function_line_numbers )):
         status += f"> {function_line_numbers[i]}:{' ' * (7-len(str( function_line_numbers[i] )))}{functions[i]}\n"
+        status += f"  {' ' * 8} Return: {documentations[i]['return']}\n"
+        status += f"  {' ' * 8} Parameters: {documentations[i]['param']}\n"
+        status += f"  {' ' * 8} {documentations[i]['brief']}\n\n"
 
     return status
