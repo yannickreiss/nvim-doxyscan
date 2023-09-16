@@ -1,12 +1,12 @@
 import re
 
-# TODO: Check why first entry seems to be always empty!
+
 def get_functions(buff_txt):
 
     lines = buff_txt.split("\n")
 
     functions = []
-    function_line_numbers = []
+    fln = []  # function_line_numbers
     line_counter = 1
     documentations = []
 
@@ -26,17 +26,15 @@ def get_functions(buff_txt):
 
             # Commit last documentation and restart
             if key == "name":
+                documentations.append(fn_documentation)
                 functions.append(target)
-                function_line_numbers.append(line_counter)
+                fln.append(line_counter)
 
-                if len(functions) > len(documentations):
-                    documentations.append(fn_documentation)
-                    fn_documentation = {
-                        "name": target,
-                        "return": "-",
-                        "brief": "-",
-                        "param": []
-                    }
+                fn_documentation = {
+                    "return": "-",
+                    "brief": "-",
+                    "param": []
+                }
             else:
                 if key == "param":
                     fn_documentation[key].append(target)
@@ -45,13 +43,13 @@ def get_functions(buff_txt):
 
         line_counter += 1
 
-    if len(functions) > len(documentations):
+    if len(functions) > 0:
         documentations.append(fn_documentation)
 
     status = f"Detected functions in buffer: {len(functions)}\n\n"
 
-    for i in range(len( function_line_numbers )):
-        status += f"> {function_line_numbers[i]}:{' ' * (7-len(str( function_line_numbers[i] )))}{functions[i]}\n"
+    for i in range(len(fln)):
+        status += f"> {fln[i]}:{' ' * (7-len(str( fln[i] )))}{functions[i]}\n"
         status += f"  {' ' * 8} Return: {documentations[i]['return']}\n"
         status += f"  {' ' * 8} Parameters: {documentations[i]['param']}\n"
         status += f"  {' ' * 8} {documentations[i]['brief']}\n\n"
