@@ -47,7 +47,7 @@ def get_functions(buff_txt):
     if len(functions) > 0:
         documentations.append(fn_documentation)
 
-    status = f"Detected functions in buffer: {len(functions)}\n\n"
+    status = ""
 
     for i in range(len(fln)):
         status += f"> {fln[i]}:{' ' * (7-len(str( fln[i] )))}{functions[i]}\n"
@@ -64,7 +64,25 @@ def get_functions(buff_txt):
             pid = 2
 
         status += "\n"
-
         status += f"  {' ' * 8} {documentations[i]['brief']}\n\n"
 
     return status
+
+
+def get_line(buffer_line):
+    """
+    Return line number from buffer line.
+
+    Args:
+        buffer_line (string): The selected functions line in buffer
+
+    Returns:
+        number the line number in the actual buffer
+    """
+
+    line_str = re.search(r"> (\d+)", buffer_line)
+    if not line_str:
+        return -1
+
+    number = int(line_str.group(1))
+    return number
