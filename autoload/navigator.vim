@@ -47,7 +47,7 @@ function! OpenFloatingWindow(command)
 
     " Set the buffer to be unmodifiable
     call nvim_buf_set_option(buffer, 'modifiable', v:false)
-    call cursor(3, 1)
+    call cursor(1, 1)
 
     nnoremap <buffer> j 5j
     nnoremap <buffer> k 5k
@@ -57,7 +57,7 @@ function! OpenFloatingWindow(command)
 endfunction
 
 function SetCursorToLine(line)
-    let line_number = py3eval("get_line(\"\"\"" . buffer_line . "\"\"\")")
+    let line_number = py3eval("get_line(\"\"\"" . line . "\"\"\")")
     call nvim_win_close(0, v:true)
     call cursor(line_number, 1)
 endfunction
