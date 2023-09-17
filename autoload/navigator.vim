@@ -41,13 +41,23 @@ function! OpenFloatingWindow(command)
     let window = nvim_open_win(buffer, v:true, options)
 
     " Run the specified command in the buffer
-"    call nvim_buf_set_lines(buffer, 0, -1, v:true, split(execute(a:command), "\n"))
     call nvim_buf_set_lines(buffer, 0, -1, v:true, split(a:command, "\n"))
     nnoremap <buffer> q :call CloseFloatingWindow()<CR>
     nnoremap <buffer> <Esc> :call CloseFloatingWindow()<CR>
 
     " Set the buffer to be unmodifiable
     call nvim_buf_set_option(buffer, 'modifiable', v:false)
+
+    call cursor(3, 1)
+
+    nnoremap <buffer> j 5j
+    nnoremap <buffer> k 5k
+
+endfunction
+
+function SetCursorToLine(line)
+    call nvim_win_close(0, v:true)
+    call cursor(line, 1)
 endfunction
 
 function CloseFloatingWindow()
